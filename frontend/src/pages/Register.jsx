@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { FaUser } from 'react-icons/fa'
 import { register, reset } from '../features/auth/authSlice'
 import Spinner from '../components/Spinner'
 
@@ -28,7 +29,7 @@ function Register() {
     }
 
     if (isSuccess || user) {
-      navigate('/')
+      navigate('/dashboard') // التغيير هنا: الذهاب للوحة التحكم
     }
 
     dispatch(reset())
@@ -52,7 +53,6 @@ function Register() {
         email,
         password,
       }
-
       dispatch(register(userData))
     }
   }
@@ -65,7 +65,7 @@ function Register() {
     <>
       <section className='heading'>
         <h1>
-           Register
+          <FaUser /> Register
         </h1>
         <p>Please create an account</p>
       </section>
@@ -116,6 +116,7 @@ function Register() {
               onChange={onChange}
             />
           </div>
+
           <div className='form-group'>
             <button type='submit' className='btn btn-block'>
               Submit

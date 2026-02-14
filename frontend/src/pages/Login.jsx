@@ -27,7 +27,7 @@ function Login() {
     }
 
     if (isSuccess || user) {
-      navigate('/')
+      navigate('/dashboard') // التغيير هنا: الذهاب للوحة التحكم
     }
 
     dispatch(reset())
@@ -61,7 +61,7 @@ function Login() {
         <h1>
           <FaSignInAlt /> Login
         </h1>
-        <p>Login and start setting goals</p>
+        <p>Login and start creating content</p>
       </section>
 
       <section className='form'>
