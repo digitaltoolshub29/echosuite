@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import GoalForm from '../components/GoalForm'
 import GoalItem from '../components/GoalItem'
 import Spinner from '../components/Spinner'
-import { getGoals, reset } from '../features/auth/goals/goalSlice'
+import { getGoals, reset } from '../features/auth/goals/goalSlice' // تأكدي أن المسار هنا مطابق لما لديك
 import { FaHandSparkles } from 'react-icons/fa'
 
 function Dashboard() {
@@ -23,10 +23,10 @@ function Dashboard() {
 
     if (!user) {
       navigate('/login')
+    } else {
+      // التعديل الهام: لا نجلب البيانات إلا إذا كان المستخدم موجوداً
+      dispatch(getGoals())
     }
-
-    // جلب الأهداف من السيرفر عند فتح الصفحة
-    dispatch(getGoals())
 
     return () => {
       dispatch(reset())

@@ -1,180 +1,235 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
+:root {
+  --primary-color: #4a90e2; /* لون أزرق عصري */
+  --secondary-color: #000000;
+  --accent-color: #fca311; /* لون برتقالي للتنبيهات */
+  --bg-color: #f4f7f6; /* خلفية رمادية فاتحة جداً لراحة العين */
+  --card-bg: #ffffff;
+  --text-color: #333333;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-hover: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: #f3f3f3;
-  color: #333;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.6;
 }
 
 a {
   text-decoration: none;
-  color: #000;
-}
-
-p {
-  line-height: 1.7;
+  color: inherit;
 }
 
 ul {
   list-style: none;
 }
 
-li {
-  line-height: 2.2;
-}
-
-h1,
-h2,
-h3 {
-  font-weight: 600;
-  margin-bottom: 10px;
-}
-
+/* --- Container (الإطار العام) --- */
 .container {
-  width: 90%;
-  max-width: 1240px;
+  width: 100%;
+  max-width: 960px;
   margin: 0 auto;
   padding: 0 20px;
   text-align: center;
 }
 
+/* --- Header (الشريط العلوي) --- */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px 0;
   border-bottom: 1px solid #e6e6e6;
-  margin-bottom: 60px;
+  margin-bottom: 40px;
+  background-color: var(--card-bg); /* خلفية بيضاء */
+  padding: 20px; /* مسافة داخلية */
+  border-radius: 0 0 15px 15px; /* حواف دائرية من الأسفل */
+  box-shadow: var(--shadow);
+}
+
+.header .logo a {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  letter-spacing: -1px;
 }
 
 .header ul {
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 
 .header ul li {
   margin-left: 20px;
 }
 
-.header ul li a {
+.header ul li a, .header ul li button {
   display: flex;
   align-items: center;
+  font-weight: 600;
+  color: #555;
+  transition: color 0.3s;
 }
 
-.header ul li a:hover {
-  color: #777;
+.header ul li a:hover, .header ul li button:hover {
+  color: var(--primary-color);
 }
 
-.header ul li a svg {
+.header ul li a svg, .header ul li button svg {
   margin-right: 5px;
 }
 
-.logo {
-  font-size: 25px;
-  font-weight: 700;
-}
-
+/* --- Headings --- */
 .heading {
   font-size: 2rem;
   font-weight: 700;
-  margin-bottom: 50px;
-  padding: 0 20px;
+  margin-bottom: 30px;
+  color: var(--secondary-color);
 }
 
 .heading p {
-  color: #828282;
+  color: #888;
+  font-size: 1.2rem;
+  font-weight: 300;
 }
 
-.goals {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-}
-
-.goal {
-  background-color: #fff;
-  margin: 10px 0;
-  padding: 20px 0 10px;
-  position: relative;
-}
-
-.goal .close {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  cursor: pointer;
-  border: none;
-  background: none;
-}
-
-.form,
-.content {
-  width: 70%;
+/* --- Forms (النماذج) --- */
+.form {
+  width: 100%;
+  max-width: 600px; /* تصغير عرض النموذج ليكون أشيك */
   margin: 0 auto;
+  background: var(--card-bg);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: var(--shadow);
 }
 
 .form-group {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+  text-align: left; /* جعل النصوص داخل النموذج تبدأ من اليسار */
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #444;
 }
 
 .form-group input,
 .form-group textarea,
 .form-group select {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #e6e6e6;
-  border-radius: 5px;
-  margin-bottom: 10px;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
   font-family: inherit;
+  font-size: 1rem;
+  transition: border-color 0.3s;
 }
 
-.form-group label {
-  text-align: left;
-  display: block;
-  margin: 0 0 5px 3px;
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
 }
 
+/* --- Buttons (الأزرار) --- */
 .btn {
-  padding: 10px 20px;
-  border: 1px solid #000;
-  border-radius: 5px;
-  background: #000;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  background: var(--secondary-color);
   color: #fff;
-  font-size: 16px;
-  font-weight: 700;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
   text-align: center;
-  appearance: button;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.3s ease;
 }
 
 .btn svg {
   margin-right: 8px;
 }
 
-.btn-reverse {
-  background: #fff;
-  color: #000;
+.btn:hover {
+  transform: translateY(-2px); /* حركة بسيطة للأعلى */
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  background: #333;
 }
 
 .btn-block {
   width: 100%;
-  margin-bottom: 20px;
+  background: var(--primary-color); /* الزر الرئيسي أزرق */
 }
 
-.btn:hover {
-  transform: scale(0.98);
+.btn-block:hover {
+  background: #357abd;
 }
 
+/* --- Goals / Cards (البطاقات) --- */
+.content {
+  width: 100%; /* تأكد أن المحتوى يأخذ العرض الكامل */
+  max-width: 800px; /* تحديد أقصى عرض للبطاقات */
+  margin: 40px auto 0; /* توسيط القائمة */
+  display: grid;
+  gap: 20px; /* مسافة بين البطاقات */
+}
+
+.goal {
+  background-color: var(--card-bg);
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  position: relative;
+  text-align: left;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.goal:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--primary-color);
+}
+
+.goal h2 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  word-break: break-all; /* لكسر الروابط الطويلة */
+}
+
+.goal .close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  color: #ff6b6b; /* لون أحمر للإغلاق */
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: transform 0.2s;
+}
+
+.goal .close:hover {
+  transform: scale(1.2);
+  background: none; /* إلغاء خلفية الزر الافتراضية */
+  box-shadow: none;
+}
+
+/* --- Loading Spinner --- */
 .loadingSpinnerContainer {
   position: fixed;
   top: 0;
@@ -192,30 +247,28 @@ h3 {
   width: 64px;
   height: 64px;
   border: 8px solid;
-  border-color: #000 transparent #555 transparent;
+  border-color: var(--primary-color) transparent var(--primary-color) transparent;
   border-radius: 50%;
   animation: spin 1.2s linear infinite;
 }
 
 @keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
+/* --- Mobile Responsiveness --- */
 @media (max-width: 600px) {
-  .form {
-    width: 90%;
+  .header {
+    flex-direction: column;
+    padding-bottom: 10px;
+  }
+  
+  .header ul {
+    margin-top: 20px;
   }
 
-  .heading h1 {
-    font-size: 2rem;
-  }
-
-  .heading p {
+  .heading {
     font-size: 1.5rem;
   }
 }
