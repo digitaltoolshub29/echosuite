@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { FaYoutube, FaPenNib, FaTwitter, FaArrowRight, FaCheckCircle } from 'react-icons/fa'
+import { FaYoutube, FaPenNib, FaTwitter, FaArrowRight } from 'react-icons/fa'
 
 function Home() {
   return (
@@ -40,42 +40,47 @@ function Home() {
         </div>
       </section>
 
-      {/* How It Works Section (New!) */}
+      {/* How It Works Section */}
       <section style={{ padding: '60px 20px', backgroundColor: '#f8f9fa', borderRadius: '20px', marginBottom: '60px', textAlign: 'center' }}>
         <h2 style={{ fontSize: '2.5rem', marginBottom: '40px', color: '#333' }}>How It Works ⚙️</h2>
         <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: '20px', textAlign: 'left' }}>
-          
           <div style={{ flex: '1', minWidth: '250px', padding: '20px' }}>
             <h1 style={{ fontSize: '4rem', color: '#e0e0e0', margin: '0' }}>01</h1>
             <h3 style={{ fontSize: '1.5rem', marginBottom: '10px' }}>Copy URL</h3>
             <p style={{ color: '#666' }}>Grab the link of any YouTube video you want to repurpose.</p>
           </div>
-
           <div style={{ flex: '1', minWidth: '250px', padding: '20px' }}>
             <h1 style={{ fontSize: '4rem', color: '#e0e0e0', margin: '0' }}>02</h1>
             <h3 style={{ fontSize: '1.5rem', marginBottom: '10px' }}>Paste & Click</h3>
             <p style={{ color: '#666' }}>Paste it into EchoSuite and hit the magic Generate button.</p>
           </div>
-
           <div style={{ flex: '1', minWidth: '250px', padding: '20px' }}>
             <h1 style={{ fontSize: '4rem', color: '#e0e0e0', margin: '0' }}>03</h1>
             <h3 style={{ fontSize: '1.5rem', marginBottom: '10px' }}>Publish</h3>
             <p style={{ color: '#666' }}>Copy your new Blog Post and Tweets and share them everywhere!</p>
           </div>
-
         </div>
       </section>
 
-      {/* CTA Section (New!) */}
-      <section style={{ textAlign: 'center', padding: '60px 20px', backgroundColor: '#2c3e50', borderRadius: '20px', color: '#fff', marginBottom: '40px' }}>
-        <h2 style={{ fontSize: '2.5rem', marginBottom: '20px' }}>Ready to Scale Your Content?</h2>
-        <p style={{ fontSize: '1.2rem', marginBottom: '30px', color: '#ccc' }}>Join creators who are saving 10+ hours a week.</p>
-        <Link to='/register' className='btn' style={{ backgroundColor: '#4a90e2', border: 'none', padding: '15px 40px', fontSize: '1.2rem', borderRadius: '50px', color: '#fff' }}>
-          Get Started Now
-        </Link>
+      {/* Newsletter Section (New!) */}
+      <section style={{ textAlign: 'center', padding: '60px 20px', backgroundColor: '#fff', borderRadius: '20px', marginBottom: '40px', border: '1px solid #eee' }}>
+        <h3 style={{ fontSize: '2rem', marginBottom: '15px', color: '#333' }}>Join the AI Content Revolution 📩</h3>
+        <p style={{ color: '#666', marginBottom: '30px' }}>Get weekly tips on how to grow your channel using AI.</p>
+        
+        <form style={{ display: 'flex', justifyContent: 'center', gap: '10px', maxWidth: '500px', margin: '0 auto' }} onSubmit={(e) => { e.preventDefault(); alert('Thanks for subscribing! (Demo)'); }}>
+          <input 
+            type="email" 
+            placeholder="Enter your email" 
+            style={{ padding: '15px', borderRadius: '50px', border: '1px solid #ddd', flex: '1', fontSize: '1rem' }} 
+            required 
+          />
+          <button type="submit" className='btn' style={{ borderRadius: '50px', padding: '15px 30px', backgroundColor: '#333', border: 'none', color: '#fff' }}>
+            Subscribe
+          </button>
+        </form>
       </section>
 
-      {/* Simple Footer (New!) */}
+      {/* Simple Footer */}
       <footer style={{ textAlign: 'center', padding: '20px', color: '#888', borderTop: '1px solid #eee', marginTop: '40px' }}>
         <p>&copy; 2026 EchoSuite. All rights reserved.</p>
         <p style={{ fontSize: '0.9rem', marginTop: '5px' }}>Made with ❤️ for Creators.</p>
