@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { FaYoutube, FaPenNib, FaTwitter, FaArrowRight } from 'react-icons/fa'
+import { FaYoutube, FaPenNib, FaTwitter, FaArrowRight, FaCheck } from 'react-icons/fa'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 
@@ -10,7 +10,6 @@ function Home() {
   const onSubscribe = async (e) => {
     e.preventDefault()
     try {
-      // إرسال الطلب للسيرفر
       await axios.post('/api/newsletter', { email })
       toast.success('Thanks for subscribing! 🎉')
       setEmail('')
@@ -83,7 +82,43 @@ function Home() {
         </div>
       </section>
 
-      {/* Newsletter Section (Real!) */}
+      {/* Pricing Section (New! 💰) */}
+      <section style={{ padding: '40px 0', marginBottom: '60px', textAlign: 'center' }}>
+        <h2 style={{ fontSize: '2.5rem', marginBottom: '15px', color: '#333' }}>Simple Pricing</h2>
+        <p style={{ color: '#666', marginBottom: '40px' }}>Start for free, upgrade when you go viral.</p>
+        
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '30px', flexWrap: 'wrap' }}>
+          
+          {/* Free Plan */}
+          <div style={{ backgroundColor: '#fff', padding: '40px', borderRadius: '20px', width: '300px', boxShadow: '0 4px 15px rgba(0,0,0,0.1)', border: '2px solid #4a90e2' }}>
+            <h3 style={{ fontSize: '1.5rem', marginBottom: '10px' }}>Beta</h3>
+            <h1 style={{ fontSize: '3rem', margin: '20px 0', color: '#333' }}>$0<span style={{ fontSize: '1rem', color: '#888' }}>/mo</span></h1>
+            <p style={{ color: '#666', marginBottom: '30px' }}>Perfect for getting started.</p>
+            <Link to='/register' className='btn btn-block' style={{ marginBottom: '20px', borderRadius: '50px' }}>Join Beta Now</Link>
+            <ul style={{ textAlign: 'left', listStyle: 'none', padding: 0 }}>
+              <li style={{ marginBottom: '10px' }}><FaCheck color='#4a90e2' /> 5 Videos / Month</li>
+              <li style={{ marginBottom: '10px' }}><FaCheck color='#4a90e2' /> AI Blog Posts</li>
+              <li style={{ marginBottom: '10px' }}><FaCheck color='#4a90e2' /> Viral Tweets</li>
+            </ul>
+          </div>
+
+          {/* Pro Plan (Disabled) */}
+          <div style={{ backgroundColor: '#f9f9f9', padding: '40px', borderRadius: '20px', width: '300px', border: '1px solid #eee', opacity: '0.7' }}>
+            <h3 style={{ fontSize: '1.5rem', marginBottom: '10px' }}>Pro</h3>
+            <h1 style={{ fontSize: '3rem', margin: '20px 0', color: '#333' }}>$29<span style={{ fontSize: '1rem', color: '#888' }}>/mo</span></h1>
+            <p style={{ color: '#666', marginBottom: '30px' }}>For serious creators.</p>
+            <button disabled className='btn' style={{ marginBottom: '20px', borderRadius: '50px', backgroundColor: '#ccc', cursor: 'not-allowed', width: '100%' }}>Coming Soon</button>
+            <ul style={{ textAlign: 'left', listStyle: 'none', padding: 0 }}>
+              <li style={{ marginBottom: '10px' }}><FaCheck color='#888' /> Unlimited Videos</li>
+              <li style={{ marginBottom: '10px' }}><FaCheck color='#888' /> Priority Support</li>
+              <li style={{ marginBottom: '10px' }}><FaCheck color='#888' /> Custom Templates</li>
+            </ul>
+          </div>
+
+        </div>
+      </section>
+
+      {/* Newsletter Section */}
       <section style={{ textAlign: 'center', padding: '60px 20px', backgroundColor: '#fff', borderRadius: '20px', marginBottom: '40px', border: '1px solid #eee' }}>
         <h3 style={{ fontSize: '2rem', marginBottom: '15px', color: '#333' }}>Join the AI Content Revolution 📩</h3>
         <p style={{ color: '#666', marginBottom: '30px' }}>Get weekly tips on how to grow your channel using AI.</p>
