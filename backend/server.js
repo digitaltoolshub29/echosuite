@@ -16,20 +16,18 @@ app.use(express.urlencoded({ extended: false }))
 // Routes
 app.use('/api/goals', require('./routes/goalRoutes'))
 app.use('/api/users', require('./routes/userRoutes'))
+app.use('/api/newsletter', require('./routes/newsletterRoutes')) // <-- تم إضافة مسار النشرة البريدية
 
 // Serve frontend (Production Mode)
 if (process.env.NODE_ENV === 'production') {
-  // توجيه السيرفر لمجلد البناء (dist)
   app.use(express.static(path.join(__dirname, '../frontend/dist')))
 
-  // أي رابط آخر غير الـ API، يذهب للصفحة الرئيسية للتطبيق
   app.get('*', (req, res) =>
     res.sendFile(
       path.resolve(__dirname, '../', 'frontend', 'dist', 'index.html')
     )
   )
 } else {
-  // وضع التطوير
   app.get('/', (req, res) => res.send('Please set to production'))
 }
 

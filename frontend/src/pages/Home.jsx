@@ -1,7 +1,28 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FaYoutube, FaPenNib, FaTwitter, FaArrowRight } from 'react-icons/fa'
+import { toast } from 'react-toastify'
+import axios from 'axios'
 
 function Home() {
+  const [email, setEmail] = useState('')
+
+  const onSubscribe = async (e) => {
+    e.preventDefault()
+    try {
+      // إرسال الطلب للسيرفر
+      await axios.post('/api/newsletter', { email })
+      toast.success('Thanks for subscribing! 🎉')
+      setEmail('')
+    } catch (error) {
+      const message =
+        (error.response && error.response.data && error.response.data.message) ||
+        error.message ||
+        error.toString()
+      toast.error(message)
+    }
+  }
+
   return (
     <>
       {/* Hero Section */}
@@ -62,16 +83,18 @@ function Home() {
         </div>
       </section>
 
-      {/* Newsletter Section (New!) */}
+      {/* Newsletter Section (Real!) */}
       <section style={{ textAlign: 'center', padding: '60px 20px', backgroundColor: '#fff', borderRadius: '20px', marginBottom: '40px', border: '1px solid #eee' }}>
         <h3 style={{ fontSize: '2rem', marginBottom: '15px', color: '#333' }}>Join the AI Content Revolution 📩</h3>
         <p style={{ color: '#666', marginBottom: '30px' }}>Get weekly tips on how to grow your channel using AI.</p>
         
-        <form style={{ display: 'flex', justifyContent: 'center', gap: '10px', maxWidth: '500px', margin: '0 auto' }} onSubmit={(e) => { e.preventDefault(); alert('Thanks for subscribing! (Demo)'); }}>
+        <form style={{ display: 'flex', justifyContent: 'center', gap: '10px', maxWidth: '500px', margin: '0 auto' }} onSubmit={onSubscribe}>
           <input 
             type="email" 
             placeholder="Enter your email" 
             style={{ padding: '15px', borderRadius: '50px', border: '1px solid #ddd', flex: '1', fontSize: '1rem' }} 
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required 
           />
           <button type="submit" className='btn' style={{ borderRadius: '50px', padding: '15px 30px', backgroundColor: '#333', border: 'none', color: '#fff' }}>
