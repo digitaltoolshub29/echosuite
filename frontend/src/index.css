@@ -1,45 +1,58 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
+/* --- تعريف الألوان (المتغيرات) --- */
 :root {
-  /* الوضع النهاري (الافتراضي) */
+  /* الوضع النهاري (الأبيض) */
   --bg-color: #f4f7f6;
   --card-bg: #ffffff;
   --text-color: #333333;
   --heading-color: #2c3e50;
-  --primary-color: #4a90e2;
-  --secondary-color: #000000;
+  --primary-color: #000000; /* الزر الأسود الفخم */
+  --accent-color: #4a90e2; /* اللينكات والأزرار الفرعية */
+  --input-bg: #ffffff;
+  --border-color: #e6e6e6;
   --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 [data-theme='dark'] {
-  /* الوضع الليلي */
-  --bg-color: #1a1a1a;
-  --card-bg: #2d2d2d;
+  /* الوضع الليلي (الأسود) */
+  --bg-color: #121212;
+  --card-bg: #1e1e1e;
   --text-color: #e0e0e0;
   --heading-color: #ffffff;
-  --primary-color: #64b5f6; /* أزرق أفتح قليلاً ليكون واضحاً */
-  --secondary-color: #ffffff;
+  --primary-color: #4a90e2; /* الزر في الليلي يكون أزرق ليكون واضحاً */
+  --accent-color: #64b5f6;
+  --input-bg: #2d2d2d;
+  --border-color: #444444;
   --shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
 }
 
+/* --- الأساسيات --- */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  transition: background-color 0.3s, color 0.3s; /* نعومة في التحويل */
+  transition: background-color 0.3s ease, color 0.3s ease; /* نعومة في التحويل */
 }
 
 body {
   font-family: 'Poppins', sans-serif;
+  height: 100vh;
   background-color: var(--bg-color);
   color: var(--text-color);
   line-height: 1.6;
 }
 
-/* باقي التنسيقات تعتمد على المتغيرات */
-a { text-decoration: none; color: inherit; }
-ul { list-style: none; }
+a {
+  text-decoration: none;
+  color: var(--text-color);
+}
 
+ul {
+  list-style: none;
+}
+
+/* --- الحاويات (Layout) --- */
 .container {
   width: 100%;
   max-width: 960px;
@@ -52,58 +65,131 @@ ul { list-style: none; }
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
-  margin-bottom: 40px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 60px;
+}
+
+.header ul {
+  display: flex;
+  align-items: center;
+}
+
+.header ul li {
+  margin-left: 20px;
+}
+
+.header ul li a svg {
+  margin-right: 5px;
+}
+
+/* --- العناوين --- */
+.heading {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 50px;
+  color: var(--heading-color);
+}
+
+.heading p {
+  color: var(--text-color);
+  opacity: 0.7;
+}
+
+/* --- النماذج (Forms) --- */
+.form {
+  width: 70%;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 20px; /* مسافة بين الخانات */
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%; /* العرض كامل */
+  padding: 15px; /* خانة مريحة */
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  margin-bottom: 10px;
+  font-family: inherit;
+  font-size: 1rem;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+}
+
+.form-group label {
+  text-align: left;
+  display: block;
+  margin: 0 0 5px 3px;
+  font-weight: 600;
+}
+
+/* --- الأزرار (Buttons) --- */
+.btn {
+  padding: 12px 30px;
+  border: 1px solid transparent;
+  border-radius: 50px; /* حواف دائرية */
+  background: var(--primary-color);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn svg {
+  margin-right: 8px;
+}
+
+.btn-block {
+  width: 100%; /* الزر بعرض الصفحة */
+  margin-bottom: 20px;
+}
+
+.btn:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+/* --- البطاقات (Goals/Cards) --- */
+.goals {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 20px;
+}
+
+.goal {
   background-color: var(--card-bg);
-  border-bottom: 1px solid #333; /* حدود خفيفة */
-  border-radius: 0 0 15px 15px;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  margin: 10px 0;
+  padding: 30px; /* مساحة داخلية واسعة */
+  position: relative; /* ضروري عشان زر الحذف */
+  border-radius: 15px;
+  text-align: left;
   box-shadow: var(--shadow);
 }
 
-.header .logo a {
-  color: var(--primary-color);
-  font-weight: 700;
-  font-size: 1.5rem;
-}
-
-.header ul { display: flex; align-items: center; }
-.header ul li { margin-left: 20px; }
-.header ul li a, .header ul li button {
-  font-weight: 600;
-  color: var(--text-color);
-}
-
-.heading h1 { color: var(--heading-color); }
-.heading p { color: var(--text-color); opacity: 0.7; }
-
-/* البطاقات والفوتر */
-.card, .goal, section, footer {
-  background-color: var(--card-bg) !important;
-  color: var(--text-color) !important;
-  box-shadow: var(--shadow) !important;
-}
-
-/* الأزرار */
-.btn {
-  background: var(--secondary-color);
-  color: var(--bg-color); /* عكس الخلفية */
-  padding: 10px 20px;
-  border-radius: 5px;
-  border: 1px solid transparent;
+/* إصلاح مكان زر الحذف (X) */
+.goal .close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
   cursor: pointer;
+  border: none;
+  background: none;
+  color: #ff6b6b; /* لون أحمر */
+  font-size: 1.2rem;
 }
 
-.btn:hover { opacity: 0.9; }
-
-.btn-block {
-  width: 100%;
-  background: var(--primary-color);
-  color: #fff;
-}
-
-/* إصلاحات خاصة بالنماذج في الوضع الليلي */
-input {
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  border: 1px solid #555;
+/* --- تحسينات الجوال --- */
+@media (max-width: 600px) {
+  .form { width: 100%; }
+  .heading h1 { font-size: 2rem; }
 }
