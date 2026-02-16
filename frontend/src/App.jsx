@@ -5,7 +5,9 @@ import Header from './components/Header'
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import Register from './pages/Register'
-import Home from './pages/Home' // استيراد الصفحة الجديدة
+import Home from './pages/Home'
+import Privacy from './pages/Privacy' // صفحة جديدة
+import Terms from './pages/Terms'     // صفحة جديدة
 
 function App() {
   return (
@@ -14,10 +16,12 @@ function App() {
         <div className='container'>
           <Header />
           <Routes>
-            <Route path='/' element={<Home />} /> {/* الصفحة الرئيسية للزوار */}
-            <Route path='/dashboard' element={<Dashboard />} /> {/* لوحة التحكم للأعضاء */}
+            <Route path='/' element={<Home />} />
+            <Route path='/dashboard' element={<Dashboard />} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
+            <Route path='/privacy' element={<Privacy />} /> {/* مسار جديد */}
+            <Route path='/terms' element={<Terms />} />     {/* مسار جديد */}
           </Routes>
         </div>
       </Router>
