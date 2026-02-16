@@ -1,11 +1,10 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import GoalForm from '../components/GoalForm'
 import GoalItem from '../components/GoalItem'
-import Spinner from '../components/Spinner'
-import { getGoals, reset } from '../features/auth/goals/goalSlice' // تأكدي أن المسار هنا مطابق لما لديك
-import { FaHandSparkles } from 'react-icons/fa'
+import { getGoals, reset } from '../features/auth/goals/goalSlice'
+import { FaHandSparkles, FaRobot } from 'react-icons/fa'
 
 function Dashboard() {
   const navigate = useNavigate()
@@ -16,6 +15,28 @@ function Dashboard() {
     (state) => state.goals
   )
 
+  // --- Smart Loading State ---
+  const [loadingMsg, setLoadingMsg] = useState('Initializing AI... 🤖')
+  
+  useEffect(() => {
+    if (isLoading) {
+      const messages = [
+        '🤖 AI is watching the video...',
+        '📝 Drafting the blog post...',
+        '🐦 Crafting viral tweets...',
+        '✨ Polishing the content...',
+        '🚀 Almost ready!'
+      ]
+      let i = 0
+      const interval = setInterval(() => {
+        setLoadingMsg(messages[i])
+        i = (i + 1) % messages.length
+      }, 2000) // Change message every 2 seconds
+      return () => clearInterval(interval)
+    }
+  }, [isLoading])
+  // ---------------------------
+
   useEffect(() => {
     if (isError) {
       console.log(message)
@@ -24,7 +45,6 @@ function Dashboard() {
     if (!user) {
       navigate('/login')
     } else {
-      // التعديل الهام: لا نجلب البيانات إلا إذا كان المستخدم موجوداً
       dispatch(getGoals())
     }
 
@@ -33,18 +53,25 @@ function Dashboard() {
     }
   }, [user, navigate, isError, message, dispatch])
 
+  // --- Custom Loading Screen ---
   if (isLoading) {
-    return <Spinner />
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '60vh', textAlign: 'center' }}>
+        <div className="loadingSpinner" style={{ marginBottom: '20px' }}></div>
+        <h2 style={{ color: '#4a90e2' }}>{loadingMsg}</h2>
+        <p style={{ color: '#888' }}>Please wait while we create magic.</p>
+      </div>
+    )
   }
 
   return (
     <>
-      <section className='heading'>
-        <h1>
+      <section className='heading' style={{ textAlign: 'center', marginBottom: '40px' }}>
+        <h1 style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
           Welcome {user && user.name} 
-          <FaHandSparkles style={{ marginLeft: '10px', color: '#fca311' }} />
+          <FaHandSparkles style={{ color: '#fca311' }} />
         </h1>
-        <p>Content Dashboard</p>
+        <p style={{ color: '#888' }}>Content Dashboard</p>
       </section>
 
       <GoalForm />
@@ -57,7 +84,11 @@ function Dashboard() {
             ))}
           </div>
         ) : (
-          <h3>You have not set any goals yet</h3>
+          <div style={{ textAlign: 'center', marginTop: '50px', color: '#ccc' }}>
+            <FaRobot size={50} style={{ marginBottom: '20px' }} />
+            <h3>No content generated yet.</h3>
+            <p>Paste a YouTube link above to start!</p>
+          </div>
         )}
       </section>
     </>
