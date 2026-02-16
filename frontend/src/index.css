@@ -1,20 +1,32 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
 :root {
-  --primary-color: #4a90e2; /* لون أزرق عصري */
-  --secondary-color: #000000;
-  --accent-color: #fca311; /* لون برتقالي للتنبيهات */
-  --bg-color: #f4f7f6; /* خلفية رمادية فاتحة جداً لراحة العين */
+  /* الوضع النهاري (الافتراضي) */
+  --bg-color: #f4f7f6;
   --card-bg: #ffffff;
   --text-color: #333333;
+  --heading-color: #2c3e50;
+  --primary-color: #4a90e2;
+  --secondary-color: #000000;
   --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  --shadow-hover: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] {
+  /* الوضع الليلي */
+  --bg-color: #1a1a1a;
+  --card-bg: #2d2d2d;
+  --text-color: #e0e0e0;
+  --heading-color: #ffffff;
+  --primary-color: #64b5f6; /* أزرق أفتح قليلاً ليكون واضحاً */
+  --secondary-color: #ffffff;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  transition: background-color 0.3s, color 0.3s; /* نعومة في التحويل */
 }
 
 body {
@@ -24,16 +36,10 @@ body {
   line-height: 1.6;
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
-}
+/* باقي التنسيقات تعتمد على المتغيرات */
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
 
-ul {
-  list-style: none;
-}
-
-/* --- Container (الإطار العام) --- */
 .container {
   width: 100%;
   max-width: 960px;
@@ -42,233 +48,62 @@ ul {
   text-align: center;
 }
 
-/* --- Header (الشريط العلوي) --- */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 0;
-  border-bottom: 1px solid #e6e6e6;
+  padding: 20px;
   margin-bottom: 40px;
-  background-color: var(--card-bg); /* خلفية بيضاء */
-  padding: 20px; /* مسافة داخلية */
-  border-radius: 0 0 15px 15px; /* حواف دائرية من الأسفل */
+  background-color: var(--card-bg);
+  border-bottom: 1px solid #333; /* حدود خفيفة */
+  border-radius: 0 0 15px 15px;
   box-shadow: var(--shadow);
 }
 
 .header .logo a {
+  color: var(--primary-color);
   font-weight: 700;
   font-size: 1.5rem;
-  color: var(--primary-color);
-  letter-spacing: -1px;
 }
 
-.header ul {
-  display: flex;
-  align-items: center;
-}
-
-.header ul li {
-  margin-left: 20px;
-}
-
+.header ul { display: flex; align-items: center; }
+.header ul li { margin-left: 20px; }
 .header ul li a, .header ul li button {
-  display: flex;
-  align-items: center;
   font-weight: 600;
-  color: #555;
-  transition: color 0.3s;
+  color: var(--text-color);
 }
 
-.header ul li a:hover, .header ul li button:hover {
-  color: var(--primary-color);
+.heading h1 { color: var(--heading-color); }
+.heading p { color: var(--text-color); opacity: 0.7; }
+
+/* البطاقات والفوتر */
+.card, .goal, section, footer {
+  background-color: var(--card-bg) !important;
+  color: var(--text-color) !important;
+  box-shadow: var(--shadow) !important;
 }
 
-.header ul li a svg, .header ul li button svg {
-  margin-right: 5px;
-}
-
-/* --- Headings --- */
-.heading {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 30px;
-  color: var(--secondary-color);
-}
-
-.heading p {
-  color: #888;
-  font-size: 1.2rem;
-  font-weight: 300;
-}
-
-/* --- Forms (النماذج) --- */
-.form {
-  width: 100%;
-  max-width: 600px; /* تصغير عرض النموذج ليكون أشيك */
-  margin: 0 auto;
-  background: var(--card-bg);
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: var(--shadow);
-}
-
-.form-group {
-  margin-bottom: 20px;
-  text-align: left; /* جعل النصوص داخل النموذج تبدأ من اليسار */
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: #444;
-}
-
-.form-group input,
-.form-group textarea,
-.form-group select {
-  width: 100%;
-  padding: 12px 15px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-family: inherit;
-  font-size: 1rem;
-  transition: border-color 0.3s;
-}
-
-.form-group input:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
-}
-
-/* --- Buttons (الأزرار) --- */
+/* الأزرار */
 .btn {
-  padding: 12px 25px;
-  border: none;
-  border-radius: 8px;
   background: var(--secondary-color);
-  color: #fff;
-  font-size: 1rem;
-  font-weight: 600;
+  color: var(--bg-color); /* عكس الخلفية */
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: 1px solid transparent;
   cursor: pointer;
-  text-align: center;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
 }
 
-.btn svg {
-  margin-right: 8px;
-}
-
-.btn:hover {
-  transform: translateY(-2px); /* حركة بسيطة للأعلى */
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-  background: #333;
-}
+.btn:hover { opacity: 0.9; }
 
 .btn-block {
   width: 100%;
-  background: var(--primary-color); /* الزر الرئيسي أزرق */
+  background: var(--primary-color);
+  color: #fff;
 }
 
-.btn-block:hover {
-  background: #357abd;
-}
-
-/* --- Goals / Cards (البطاقات) --- */
-.content {
-  width: 100%; /* تأكد أن المحتوى يأخذ العرض الكامل */
-  max-width: 800px; /* تحديد أقصى عرض للبطاقات */
-  margin: 40px auto 0; /* توسيط القائمة */
-  display: grid;
-  gap: 20px; /* مسافة بين البطاقات */
-}
-
-.goal {
-  background-color: var(--card-bg);
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-  position: relative;
-  text-align: left;
-  transition: all 0.3s ease;
-  border: 1px solid transparent;
-}
-
-.goal:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-hover);
-  border-color: var(--primary-color);
-}
-
-.goal h2 {
-  font-size: 1.2rem;
-  margin-bottom: 10px;
-  word-break: break-all; /* لكسر الروابط الطويلة */
-}
-
-.goal .close {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: none;
-  border: none;
-  color: #ff6b6b; /* لون أحمر للإغلاق */
-  cursor: pointer;
-  font-size: 1.2rem;
-  transition: transform 0.2s;
-}
-
-.goal .close:hover {
-  transform: scale(1.2);
-  background: none; /* إلغاء خلفية الزر الافتراضية */
-  box-shadow: none;
-}
-
-/* --- Loading Spinner --- */
-.loadingSpinnerContainer {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 5000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.loadingSpinner {
-  width: 64px;
-  height: 64px;
-  border: 8px solid;
-  border-color: var(--primary-color) transparent var(--primary-color) transparent;
-  border-radius: 50%;
-  animation: spin 1.2s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* --- Mobile Responsiveness --- */
-@media (max-width: 600px) {
-  .header {
-    flex-direction: column;
-    padding-bottom: 10px;
-  }
-  
-  .header ul {
-    margin-top: 20px;
-  }
-
-  .heading {
-    font-size: 1.5rem;
-  }
+/* إصلاحات خاصة بالنماذج في الوضع الليلي */
+input {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  border: 1px solid #555;
 }
