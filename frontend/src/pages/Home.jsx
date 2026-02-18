@@ -82,7 +82,7 @@ function Home() {
         </div>
       </section>
 
-      {/* Pricing Section (Updated to $19) */}
+      {/* Pricing Section */}
       <section style={{ padding: '40px 0', marginBottom: '60px', textAlign: 'center' }}>
         <h2 style={{ fontSize: '2.5rem', marginBottom: '15px', color: '#333' }}>Simple Pricing</h2>
         <p style={{ color: '#666', marginBottom: '40px' }}>Start for free, upgrade when you go viral.</p>
@@ -102,12 +102,26 @@ function Home() {
             </ul>
           </div>
 
-          {/* Pro Plan ($19) */}
-          <div style={{ backgroundColor: '#f9f9f9', padding: '40px', borderRadius: '20px', width: '300px', border: '1px solid #eee', opacity: '0.7' }}>
+          {/* Pro Plan (Waitlist) - THIS IS THE MODIFIED PART */}
+          <div style={{ backgroundColor: '#fff', padding: '40px', borderRadius: '20px', width: '300px', border: '1px solid #eee' }}>
             <h3 style={{ fontSize: '1.5rem', marginBottom: '10px' }}>Pro</h3>
-            <h1 style={{ fontSize: '3rem', margin: '20px 0', color: '#333' }}>$19<span style={{ fontSize: '1rem', color: '#888' }}>/mo</span></h1>
+            
+            {/* PRICE CHANGED TO TEXT */}
+            <h1 style={{ fontSize: '2.5rem', margin: '20px 0', color: '#888', lineHeight: '1.2' }}>
+                Coming<br />Soon
+            </h1>
+
             <p style={{ color: '#666', marginBottom: '30px' }}>For serious creators.</p>
-            <button disabled className='btn' style={{ marginBottom: '20px', borderRadius: '50px', backgroundColor: '#ccc', cursor: 'not-allowed', width: '100%' }}>Coming Soon</button>
+            
+            {/* BUTTON CHANGED */}
+            <button 
+              className='btn' 
+              style={{ marginBottom: '20px', borderRadius: '50px', width: '100%', backgroundColor: '#4a90e2', color: 'white', border: 'none' }}
+              onClick={() => toast.info('You will be notified when Pro is available!')}
+            >
+              Join Waitlist
+            </button>
+
             <ul style={{ textAlign: 'left', listStyle: 'none', padding: 0 }}>
               <li style={{ marginBottom: '10px' }}><FaCheck color='#888' /> Unlimited Videos</li>
               <li style={{ marginBottom: '10px' }}><FaCheck color='#888' /> Priority Support</li>
