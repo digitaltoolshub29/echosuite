@@ -153,9 +153,9 @@ function Home() {
         </form>
       </section>
 
-      {/* Footer (Restored Links!) */}
+      {/* Footer - THIS IS THE MODIFIED PART */}
       <footer style={{ textAlign: 'center', padding: '40px 20px', color: '#888', borderTop: '1px solid #eee', marginTop: '40px', backgroundColor: '#f9f9f9' }}>
-        <p>&copy; 2026 EchoSuite. All rights reserved.</p>
+        <p>&copy; 2026 Zenith. All rights reserved.</p>
         <div style={{ marginTop: '10px', fontSize: '0.9rem' }}>
           <Link to="/privacy" style={{ margin: '0 10px', color: '#666' }}>Privacy Policy</Link>
           |
