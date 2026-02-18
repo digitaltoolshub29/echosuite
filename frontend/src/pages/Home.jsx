@@ -102,7 +102,7 @@ function Home() {
             </ul>
           </div>
 
-          {/* Pro Plan (Waitlist) - THIS IS THE MODIFIED PART */}
+          {/* Pro Plan (Waitlist) - FINAL VERSION */}
           <div style={{ backgroundColor: '#fff', padding: '40px', borderRadius: '20px', width: '300px', border: '1px solid #eee' }}>
             <h3 style={{ fontSize: '1.5rem', marginBottom: '10px' }}>Pro</h3>
             
@@ -123,7 +123,8 @@ function Home() {
             </button>
 
             <ul style={{ textAlign: 'left', listStyle: 'none', padding: 0 }}>
-              <li style={{ marginBottom: '10px' }}><FaCheck color='#888' /> Unlimited Videos</li>
+              {/* MOST IMPORTANT CHANGE HERE */}
+              <li style={{ marginBottom: '10px' }}><FaCheck color='#888' /> 50 Videos / Month</li>
               <li style={{ marginBottom: '10px' }}><FaCheck color='#888' /> Priority Support</li>
               <li style={{ marginBottom: '10px' }}><FaCheck color='#888' /> Custom Templates</li>
             </ul>
