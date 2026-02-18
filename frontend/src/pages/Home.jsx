@@ -72,7 +72,7 @@ function Home() {
           <div style={{ flex: '1', minWidth: '250px', padding: '20px' }}>
             <h1 style={{ fontSize: '4rem', color: '#e0e0e0', margin: '0' }}>02</h1>
             <h3 style={{ fontSize: '1.5rem', marginBottom: '10px' }}>Paste & Click</h3>
-            <p style={{ color: '#666' }}>Paste it into EchoSuite and hit the magic Generate button.</p>
+            <p style={{ color: '#666' }}>Paste it into Zenith and hit the magic Generate button.</p>
           </div>
           <div style={{ flex: '1', minWidth: '250px', padding: '20px' }}>
             <h1 style={{ fontSize: '4rem', color: '#e0e0e0', margin: '0' }}>03</h1>

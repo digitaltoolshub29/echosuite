@@ -8,7 +8,7 @@ function Privacy() {
       <p style={{ color: '#666' }}>Last updated: February 2026</p>
       
       <h3 style={{ marginTop: '20px' }}>1. Introduction</h3>
-      <p>Welcome to EchoSuite. We respect your privacy and are committed to protecting your personal data.</p>
+      <p>Welcome to Zenith. We respect your privacy and are committed to protecting your personal data.</p>
 
       <h3 style={{ marginTop: '20px' }}>2. Data We Collect</h3>
       <p>We may collect personal identification information (Name, email address) when you register or subscribe to our newsletter.</p>

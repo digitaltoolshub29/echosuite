@@ -31,7 +31,7 @@ function Header() {
   return (
     <header className='header'>
       <div className='logo'>
-        <Link to='/'>EchoSuite ♻️</Link>
+        <Link to='/'>Zenith ♻️</Link>
       </div>
       <ul>
         {/* زر التبديل */}
