@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-const API_URL = '/api/goals/'
+const API_URL = 'https://echosuite-fatma.onrender.com/api/goals/'
+
 
 // Create new goal (Send YouTube URL)
 const createGoal = async (goalData, token) => {
