@@ -1,169 +1,127 @@
-const asyncHandler = require('express-async-handler')
-const Goal = require('../models/goalModel')
-const User = require('../models/userModel')
-const { YoutubeTranscript } = require('youtube-transcript')
-const he = require('he')
+const asyncHandler = require('express-async-handler');
+const Goal = require('../models/goalModel');
+const Groq = require('groq-sdk');
+const axios = require('axios');
 
-// @desc    Get goals
-// @route   GET /api/goals
-// @access  Private
+const groq = new Groq({
+    apiKey: process.env.GROQ_API_KEY
+});
+
 const getGoals = asyncHandler(async (req, res) => {
-  const goals = await Goal.find({ user: req.user.id })
+  const goals = await Goal.find({ user: req.user.id });
+  res.status(200).json(goals);
+});
 
-  res.status(200).json(goals)
-})
+function extractVideoId(url) {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+}
 
-// @desc    Set goal (Generate Content Demo)
-// @route   POST /api/goals
-// @access  Private
 const setGoal = asyncHandler(async (req, res) => {
   if (!req.body.text) {
-    res.status(400)
-    throw new Error('Please add a text field')
+    res.status(400);
+    throw new Error('Please add a YouTube link');
   }
 
-  let transcriptText = ''
-  let simulatedBlogPost = ''
-  let simulatedTweets = []
+  const youtubeUrl = req.body.text;
+  const videoId = extractVideoId(youtubeUrl);
+  
+  if (!videoId) {
+      res.status(400);
+      throw new Error('Invalid YouTube URL');
+  }
 
-  // --- تفعيل الوضع التجريبي للفيديو الخاص بك ---
-  // استبدلي الرابط أدناه برابط الفيديو الذي ستستخدمينه في الشرح
-  if (req.body.text.includes('youtu.be/Ook-4tDmJN4') || req.body.text.includes('youtube.com/watch?v=Ook-4tDmJN4')) {
+  let videoContent = "";
+
+  try {
+    const options = {
+      method: 'GET',
+      url: 'https://youtube-transcript3.p.rapidapi.com/api/transcript',
+      params: { videoId: videoId },
+      headers: {
+        'x-rapidapi-host': 'youtube-transcript3.p.rapidapi.com',
+        'x-rapidapi-key': process.env.RAPID_API_KEY
+      }
+    };
+
+    const response = await axios.request(options);
     
-    console.log('✨ Magic Demo Mode Activated!')
+    if (response.data && response.data.transcript && response.data.transcript.length > 0) {
+        let fullText = response.data.transcript.map(item => item.text).join(' ');
+        videoContent = fullText.substring(0, 15000); 
+    } else {
+        throw new Error("No transcript found.");
+    }
 
-    // 1. Transcript (مقتطف صغير)
-    transcriptText = `Welcome to your all-in-one guide to mastering email marketing in 2026. Whether you're a small business owner, a budding creator, or a marketer looking to sharpen your skills, this guide will walk you through everything you need to know.`
-
-    // 2. مقالك الاحترافي (مدمج هنا)
-    simulatedBlogPost = `
-# THE COMPLETE GUIDE TO EMAIL MARKETING FOR BEGINNERS (2026) 📧
-
-**Welcome to your all-in-one guide to mastering email marketing in 2026.** Whether you're a small business owner, a budding creator, or a marketer looking to sharpen your skills, this guide will walk you through everything you need to know.
-
-### Part 1: What is Email Marketing and Why Does It Matter?
-Email marketing is a digital marketing strategy that involves sending emails to a list of subscribers to promote products or services. It's a direct form of marketing that allows you to connect with people who have explicitly given you permission.
-
-**Key Benefits:**
-*   **High ROI:** Studies show an average return of $36 to $45 for every $1 spent.
-*   **Direct Audience Connection:** You own your list, unlike social media followers.
-*   **Measurable Results:** Track open rates, clicks, and conversions easily.
-
-### Part 2: Building Your Email List From Scratch
-A healthy, engaged email list is the foundation. **Never buy email lists.**
-**Effective Strategies:**
-1.  **Use Lead Magnets:** Offer free ebooks, guides, or checklists.
-2.  **Optimize Signup Forms:** Keep it simple and use compelling CTAs like "Join Now".
-3.  **Promote Your List:** Add links to your social media profiles.
-
-### Part 3: Crafting Your First Campaign
-**Step 1: Plan Your Goals.** Define what you want to achieve (Sales? Engagement?).
-**Step 2: Write Engaging Copy.** Use storytelling and keep paragraphs short.
-**Step 3: Design for Clarity.** Use a simple single-column layout.
-
-### Part 4: Choosing an Email Platform
-Top picks for 2026:
-*   **MailerLite:** Best for beginners, free plan for 500 subs.
-*   **GetResponse:** All-in-one platform with webinar hosting.
-*   **HubSpot:** Powerful CRM integration.
-
-### Part 5: Measuring Success
-Track these metrics:
-*   **Open Rate:** Are people reading your subject lines?
-*   **Click-Through Rate (CTR):** Are they taking action?
-*   **Unsubscribe Rate:** Is your content relevant?
-
-*Generated by Zenith AI*
-    `
-
-    // 3. تغريدات مستوحاة من المقال
-    simulatedTweets = [
-      "📧 Email marketing isn't dead. In 2026, it's stronger than ever with an average ROI of $36 for every $1 spent. Are you utilizing it? #DigitalMarketing #ROI",
-      "🛑 Stop buying email lists! It harms your reputation and breaks trust. Instead, build organically with valuable Lead Magnets like ebooks and guides. #MarketingTips #BusinessGrowth",
-      "💡 Pro Tip: Personalization goes beyond just 'Hi [Name]'. Segment your audience based on behavior to send highly relevant emails that convert. #EmailMarketing #Personalization",
-      "📉 High bounce rate? It might be time to clean your list. Removing inactive subscribers actually improves your deliverability and engagement scores. #MarketingHacks",
-      "🛠️ Tools I recommend for beginners in 2026: MailerLite for simplicity, HubSpot for CRM integration. Choose what fits your budget! #SaaS #TechTools"
-    ]
-
-  } else {
-    // --- الوضع الافتراضي لأي فيديو آخر ---
-    transcriptText = "This is a simulated transcript placeholder for general videos."
-    simulatedBlogPost = `## AI Generated Summary\n\nThis is a placeholder blog post for the video: ${req.body.text}.\n\n**Key Points:**\n1. Point One.\n2. Point Two.\n3. Point Three.`
-    simulatedTweets = ["🚀 Check this out!", "💡 Amazing video.", "🔥 Must watch content."]
+  } catch (error) {
+    console.error('RapidAPI Error:', error.message);
+    res.status(400);
+    throw new Error('Could not read this video. Captions might be disabled.');
   }
 
-  const goal = await Goal.create({
-    text: req.body.text,
-    transcript: transcriptText,
-    blogPost: simulatedBlogPost,
-    tweets: simulatedTweets,
-    user: req.user.id,
-  })
+  try {
+    // التعديل الجوهري: نطلب من الذكاء الاصطناعي إرجاع إجابة بهيئة JSON مقسمة
+    const prompt = `
+      You are an expert content creator working for Zenith.
+      Here is a transcript from a YouTube video: 
+      "${videoContent}"
+      
+      Based ONLY on this transcript, generate the following in highly professional English.
+      You MUST return ONLY a valid JSON object with the following exact keys:
+      {
+        "blogPost": "Write a clear, structured, SEO-optimized blog post with paragraphs.",
+        "tweets": ["Tweet 1 text", "Tweet 2 text", "Tweet 3 text"]
+      }
+      Do not include any other text, markdown, or explanation outside the JSON object.
+    `;
 
-  res.status(200).json(goal)
-})
+    const chatCompletion = await groq.chat.completions.create({
+      messages: [{ role: "user", content: prompt }],
+      model: "llama-3.1-8b-instant",
+      // إجبار المحرك على إرجاع JSON فقط
+      response_format: { type: "json_object" } 
+    });
 
-// @desc    Update goal
-// @route   PUT /api/goals/:id
-// @access  Private
+    let aiData;
+    try {
+        aiData = JSON.parse(chatCompletion.choices[0]?.message?.content);
+    } catch(e) {
+        throw new Error("Failed to parse AI response.");
+    }
+
+    // تجهيز البيانات لتتوافق تماماً مع الواجهة الأمامية القديمة الأنيقة
+    const goal = await Goal.create({
+      text: youtubeUrl,
+      transcript: "Transcript successfully processed.", // يمكن وضع النص هنا إذا أردتِ ظهوره
+      blogPost: aiData.blogPost || "Blog post generation failed.",
+      tweets: aiData.tweets || ["Failed to generate tweets"],
+      user: req.user.id,
+    });
+
+    res.status(200).json(goal);
+
+  } catch (error) {
+    console.error('AI Error:', error);
+    res.status(500);
+    throw new Error('AI Engine Error.');
+  }
+});
+
 const updateGoal = asyncHandler(async (req, res) => {
-  const goal = await Goal.findById(req.params.id)
+  const goal = await Goal.findById(req.params.id);
+  if (!goal) { res.status(400); throw new Error('Goal not found'); }
+  if (goal.user.toString() !== req.user.id) { res.status(401); throw new Error('Not authorized'); }
+  const updatedGoal = await Goal.findByIdAndUpdate(req.params.id, req.body, { new: true });
+  res.status(200).json(updatedGoal);
+});
 
-  if (!goal) {
-    res.status(400)
-    throw new Error('Goal not found')
-  }
-
-  // Check for user
-  if (!req.user) {
-    res.status(401)
-    throw new Error('User not found')
-  }
-
-  // Make sure the logged in user matches the goal user
-  if (goal.user.toString() !== req.user.id) {
-    res.status(401)
-    throw new Error('User not authorized')
-  }
-
-  const updatedGoal = await Goal.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-  })
-
-  res.status(200).json(updatedGoal)
-})
-
-// @desc    Delete goal
-// @route   DELETE /api/goals/:id
-// @access  Private
 const deleteGoal = asyncHandler(async (req, res) => {
-  const goal = await Goal.findById(req.params.id)
+  const goal = await Goal.findById(req.params.id);
+  if (!goal) { res.status(400); throw new Error('Goal not found'); }
+  if (goal.user.toString() !== req.user.id) { res.status(401); throw new Error('Not authorized'); }
+  await goal.deleteOne();
+  res.status(200).json({ id: req.params.id });
+});
 
-  if (!goal) {
-    res.status(400)
-    throw new Error('Goal not found')
-  }
-
-  // Check for user
-  if (!req.user) {
-    res.status(401)
-    throw new Error('User not found')
-  }
-
-  // Make sure the logged in user matches the goal user
-  if (goal.user.toString() !== req.user.id) {
-    res.status(401)
-    throw new Error('User not authorized')
-  }
-
-  await goal.deleteOne()
-
-  res.status(200).json({ id: req.params.id })
-})
-
-module.exports = {
-  getGoals,
-  setGoal,
-  updateGoal,
-  deleteGoal,
-}
+module.exports = { getGoals, setGoal, updateGoal, deleteGoal };

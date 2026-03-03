@@ -12,11 +12,13 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "axios": "^1.13.6",
     "bcryptjs": "^3.0.3",
     "colors": "^1.4.0",
     "dotenv": "^17.2.4",
     "express": "^5.2.1",
     "express-async-handler": "^1.2.0",
+    "groq-sdk": "^0.37.0",
     "he": "^1.2.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.1.6",
