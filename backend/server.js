@@ -1,6 +1,7 @@
 const path = require('path')
 const express = require('express')
 const colors = require('colors')
+const cors = require('cors'); // <-- السطر الأول الجديد
 const dotenv = require('dotenv').config()
 const { errorHandler } = require('./middleware/errorMiddleware')
 const connectDB = require('./config/db')
@@ -10,18 +11,20 @@ connectDB()
 
 const app = express()
 
+// تفعيل CORS
+app.use(cors()); // <-- السطر الثاني الجديد
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
 // Routes
 app.use('/api/goals', require('./routes/goalRoutes'))
 app.use('/api/users', require('./routes/userRoutes'))
-app.use('/api/newsletter', require('./routes/newsletterRoutes')) // <-- تم إضافة مسار النشرة البريدية
+app.use('/api/newsletter', require('./routes/newsletterRoutes'))
 
 // Serve frontend (Production Mode)
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../frontend/dist')))
-
   app.get('*', (req, res) =>
     res.sendFile(
       path.resolve(__dirname, '../', 'frontend', 'dist', 'index.html')
