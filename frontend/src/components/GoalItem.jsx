@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-// import { deleteGoal } from '../features/goals/goalSlice'; // <--- تم تعطيل هذا السطر مؤقتًا
+import { deleteGoal } from '../features/goals/goalSlice'; // <--- تم تصحيح المسار هنا
 import { FaTimes, FaTwitter, FaFileAlt, FaCopy } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
@@ -14,11 +14,9 @@ function GoalItem({ goal }) {
   return (
     <div className='goal' style={{ position: 'relative', backgroundColor: '#fff', padding: '30px', borderRadius: '15px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)', marginTop: '30px', maxWidth: '800px', margin: '30px auto' }}>
       
-      {/* تم تعطيل زر الحذف مؤقتًا
       <button onClick={() => dispatch(deleteGoal(goal._id))} className='close' style={{ position: 'absolute', top: '15px', right: '15px', border: 'none', background: 'none', cursor: 'pointer', color: '#ff6b6b', fontSize: '1.2rem' }}>
         <FaTimes />
       </button>
-      */}
 
       <div style={{ color: '#888', fontSize: '0.8rem', marginBottom: '15px' }}>
         {new Date(goal.createdAt).toLocaleString('en-US')}
