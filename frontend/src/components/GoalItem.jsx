@@ -1,15 +1,15 @@
-import { useDispatch } from 'react-redux'
-import { deleteGoal } from '../features/goals/GoalSlice'
-import { FaTimes, FaTwitter, FaFileAlt, FaCopy } from 'react-icons/fa'
-import { toast } from 'react-toastify'
+import { useDispatch } from 'react-redux';
+import { deleteGoal } from '../features/goals/goalSlice'; // <--- تم تصحيح حالة الحرف هنا
+import { FaTimes, FaTwitter, FaFileAlt, FaCopy } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 function GoalItem({ goal }) {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const copyToClipboard = (text, type) => {
-    navigator.clipboard.writeText(text)
-    toast.success(`${type} Copied! 📋`)
-  }
+    navigator.clipboard.writeText(text);
+    toast.success(`${type} Copied! 📋`);
+  };
 
   return (
     <div className='goal' style={{ position: 'relative', backgroundColor: '#fff', padding: '30px', borderRadius: '15px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)', marginTop: '30px', maxWidth: '800px', margin: '30px auto' }}>
@@ -75,7 +75,7 @@ function GoalItem({ goal }) {
         </div>
       )}
     </div>
-  )
+  );
 }
 
-export default GoalItem
+export default GoalItem;
