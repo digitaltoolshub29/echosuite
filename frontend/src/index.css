@@ -188,6 +188,37 @@ ul {
   font-size: 1.2rem;
 }
 
+/* --- Tweet items --- */
+.tweet-item {
+  background-color: #f0f4f8;
+  color: #333333;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 10px;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  line-height: 1.5;
+}
+
+.tweet-item .tweet-copy-btn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #1da1f2;
+  margin-left: 15px;
+}
+
+[data-theme='dark'] .tweet-item {
+  background-color: #1da1f2;
+  color: #ffffff;
+}
+
+[data-theme='dark'] .tweet-item .tweet-copy-btn {
+  color: #ffffff;
+}
+
 /* --- تحسينات الجوال --- */
 @media (max-width: 600px) {
   .form { width: 100%; }
