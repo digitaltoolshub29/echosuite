@@ -53,20 +53,9 @@ function GoalItem({ goal }) {
           </div>
           <ul style={{ listStyle: 'none', padding: 0 }}>
             {goal.tweets.map((tweet, index) => (
-              <li key={index} style={{ 
-                  backgroundColor: '#1da1f2',
-                  color: '#ffffff',
-                  padding: '15px', 
-                  margin: '10px 0', 
-                  borderRadius: '10px', 
-                  fontSize: '14px',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  lineHeight: '1.5'
-                }}>
+              <li key={index} className="tweet-item">
                 <span>{tweet}</span>
-                <button onClick={() => copyToClipboard(tweet, 'Tweet')} style={{ border: 'none', background: 'none', cursor: 'pointer', color: 'white', marginLeft: '15px' }} title="Copy Tweet">
+                <button onClick={() => copyToClipboard(tweet, 'Tweet')} className="tweet-copy-btn" title="Copy Tweet">
                   <FaCopy size={16} />
                 </button>
               </li>
