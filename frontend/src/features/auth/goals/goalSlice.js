@@ -67,7 +67,8 @@ export const deleteGoal = createAsyncThunk(
 )
 
 export const goalSlice = createSlice({
-  name: 'goal',
+  // FIX: Changed name to 'goals' (plural) for consistency with the store
+  name: 'goals',
   initialState,
   reducers: {
     reset: (state) => initialState,
