@@ -10,7 +10,6 @@ const groq = new Groq({
 // --- دالة التصحيح الإملائي ---
 function correctSpelling(text) {
     if (!text) return text;
-    // يمكننا إضافة المزيد من التصحيحات هنا في المستقبل
     return text.replace(/IESL/gi, 'IELTS');
 }
 
@@ -65,50 +64,59 @@ const setGoal = asyncHandler(async (req, res) => {
     }
 
     try {
-        const prompt = `
-          You are an expert content creator working for Zenith.
-          Here is a transcript from a YouTube video: 
-          "${videoContent}"
-          
-          Based ONLY on this transcript, generate the following in highly professional English.
-          You MUST return ONLY a valid JSON object with the following exact keys:
-          {
-            "blogPost": "Write a clear, structured, SEO-optimized blog post with paragraphs.",
-            "tweets": ["Tweet 1 text", "Tweet 2 text", "Tweet 3 text"]
-          }
-          Do not include any other text, markdown, or explanation outside the JSON object.
-        `;
-
         const chatCompletion = await groq.chat.completions.create({
-            messages: [{ role: "user", content: prompt }],
+            messages: [
+                {
+                    role: "system",
+                    content: `You are a world-class content creation assistant for a company named Zenith. Your task is to generate a blog post and three tweets based on a provided YouTube video transcript.
+                    You MUST ONLY respond with a single, valid, minified JSON object. Do not include any text, explanation, or markdown before or after the JSON object.
+                    The JSON object must have the following exact structure: { "blogPost": "...", "tweets": ["...", "...", "..."] }`
+                },
+                {
+                    role: "user",
+                    content: `Here is the transcript: "${videoContent}"`
+                }
+            ],
             model: "llama-3.1-8b-instant",
             response_format: { type: "json_object" } 
         });
 
         let aiData;
-        try {
-            aiData = JSON.parse(chatCompletion.choices[0]?.message?.content);
-        } catch(e) {
-            throw new Error("Failed to parse AI response.");
+        const aiResponseContent = chatCompletion.choices[0]?.message?.content;
+
+        if (!aiResponseContent) {
+            throw new Error("AI returned an empty response.");
         }
 
-        // --- تطبيق التصحيح الإملائي ---
+        try {
+            aiData = JSON.parse(aiResponseContent);
+        } catch(e) {
+            console.error("Raw AI Response that failed to parse:", aiResponseContent);
+            throw new Error("Failed to parse AI response into JSON.");
+        }
+
+        if (!aiData.blogPost || !aiData.tweets) {
+            console.error("Parsed AI Data was missing keys:", aiData);
+            throw new Error("AI response is missing required JSON keys (blogPost or tweets).");
+        }
+
         const correctedBlogPost = correctSpelling(aiData.blogPost);
-        const correctedTweets = aiData.tweets ? aiData.tweets.map(tweet => correctSpelling(tweet)) : [];
+        const correctedTweets = aiData.tweets.map(tweet => correctSpelling(tweet));
 
         const goal = await Goal.create({
             text: youtubeUrl,
             transcript: "Transcript successfully processed.",
-            blogPost: correctedBlogPost || "Blog post generation failed.",
-            tweets: correctedTweets.length > 0 ? correctedTweets : ["Failed to generate tweets"],
+            blogPost: correctedBlogPost,
+            tweets: correctedTweets,
             user: req.user.id,
         });
 
         res.status(200).json(goal);
+
     } catch (error) {
-        console.error('AI Error:', error);
+        console.error('AI Engine Error:', error);
         res.status(500);
-        throw new Error('AI Engine Error.');
+        throw new Error('An error occurred with the AI Engine.');
     }
 });
 

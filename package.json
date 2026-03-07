@@ -1,5 +1,5 @@
 {
-  "name": "Zenith",
+  "name": "zenith",
   "version": "1.0.0",
   "description": "Zenith Full Stack App",
   "main": "backend/server.js",
