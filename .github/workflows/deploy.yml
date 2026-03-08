@@ -9,19 +9,19 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: Set up Node.js version 20
         uses: actions/setup-node@v3
         with:
-          node-version: '20' # Or the version you are using
+          node-version: '20'
 
-      - name: Install Dependencies
+      - name: Install frontend dependencies
         run: npm install
         working-directory: ./frontend
 
-      - name: Build Project
+      - name: Build frontend project
         run: npm run build
         working-directory: ./frontend
 
@@ -31,7 +31,7 @@ jobs:
           publish-dir: './frontend/dist'
           production-branch: main
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "Deploy from GitHub Action"
+          deploy-message: "Deploy from GitHub Actions"
           enable-pull-request-comment: false
           enable-commit-comment: false
           overwrites-pull-request-comment: false
