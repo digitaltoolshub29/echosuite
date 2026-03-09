@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
-/* --- Color Variables --- */
 :root {
   --bg-color: #f4f7f6;
   --card-bg: #ffffff;
@@ -25,7 +24,6 @@
   --shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
 }
 
-/* --- Base Styles --- */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -50,7 +48,6 @@ ul {
   list-style: none;
 }
 
-/* --- Layout --- */
 .container {
   width: 100%;
   max-width: 960px;
@@ -81,7 +78,6 @@ ul {
   margin-right: 5px;
 }
 
-/* --- Typography --- */
 .heading {
   font-size: 2rem;
   font-weight: 700;
@@ -94,7 +90,6 @@ ul {
   opacity: 0.7;
 }
 
-/* --- Forms --- */
 .form {
   width: 70%;
   margin: 0 auto;
@@ -125,7 +120,6 @@ ul {
   font-weight: 600;
 }
 
-/* --- Buttons --- */
 .btn {
   padding: 12px 30px;
   border: 1px solid transparent;
@@ -155,7 +149,6 @@ ul {
   transform: translateY(-2px);
 }
 
-/* --- Goals/Cards --- */
 .goals {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
@@ -185,8 +178,6 @@ ul {
   font-size: 1.2rem;
 }
 
-/* --- NEW STYLES FOR GENERATED CONTENT --- */
-
 .output-section {
   border-top: 1px solid var(--border-color);
   padding-top: 20px;
@@ -215,7 +206,6 @@ ul {
   color: var(--accent-color);
 }
 
-/* Markdown Content Styling */
 .markdown-content {
   line-height: 1.7;
   color: var(--text-color);
@@ -244,7 +234,6 @@ ul {
   margin-bottom: 8px;
 }
 
-/* Tweet List Styling */
 .tweet-list {
   list-style: none;
   padding: 0;
@@ -274,5 +263,26 @@ ul {
   margin-left: 15px;
 }
 
-/* Hashtag Styling */
-.hashtag
+.hashtag-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.hashtag-pill {
+  background-color: var(--accent-color);
+  color: #fff;
+  padding: 5px 12px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+@media (max-width: 600px) {
+  .form {
+    width: 100%;
+  }
+  .heading h1 {
+    font-size: 2rem;
+  }
+}
