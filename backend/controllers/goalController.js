@@ -7,12 +7,6 @@ const groq = new Groq({
     apiKey: process.env.GROQ_API_KEY
 });
 
-// --- دالة التصحيح الإملائي ---
-function correctSpelling(text) {
-    if (!text) return text;
-    return text.replace(/IESL/gi, 'IELTS');
-}
-
 const getGoals = asyncHandler(async (req, res) => {
     const goals = await Goal.find({ user: req.user.id });
     res.status(200).json(goals);
@@ -64,18 +58,31 @@ const setGoal = asyncHandler(async (req, res) => {
     }
 
     try {
+        const masterPrompt = `You are a world-class content strategist for a company named Zenith. Your mission is to transform a raw video transcript into high-value, engaging marketing assets. You MUST ONLY respond with a single, valid, minified JSON object. Do not include any text, explanation, or markdown before or after the JSON object. The JSON object must have the following exact structure: { "blogPost": "...", "tweets": ["...", "..."], "hashtags": ["...", "...", "..."] }
+
+        INSTRUCTIONS:
+        1. For "blogPost":
+           - Write an SEO-optimized blog post based on the transcript.
+           - The blog post MUST be formatted in Markdown.
+           - It MUST include a compelling H1 title (e.g., "# Title").
+           - It MUST be structured with at least three H2 subheadings (e.g., "## Subheading").
+           - Use bullet points or numbered lists where appropriate.
+           - Use bold text ('**text**') to emphasize key terms.
+           - The tone should be expert, yet accessible.
+
+        2. For "tweets":
+           - Generate a thread of exactly 3 tweets.
+           - The first tweet must be a strong, curiosity-driven hook.
+           - The tweets should flow logically and provide value.
+           - Use emojis intelligently to increase engagement.
+
+        3. For "hashtags":
+           - Provide an array of exactly 5 relevant and strategic hashtags for Twitter and LinkedIn.`;
+
         const chatCompletion = await groq.chat.completions.create({
             messages: [
-                {
-                    role: "system",
-                    content: `You are a world-class content creation assistant for a company named Zenith. Your task is to generate a blog post and three tweets based on a provided YouTube video transcript.
-                    You MUST ONLY respond with a single, valid, minified JSON object. Do not include any text, explanation, or markdown before or after the JSON object.
-                    The JSON object must have the following exact structure: { "blogPost": "...", "tweets": ["...", "...", "..."] }`
-                },
-                {
-                    role: "user",
-                    content: `Here is the transcript: "${videoContent}"`
-                }
+                { role: "system", content: masterPrompt },
+                { role: "user", content: `Here is the transcript: "${videoContent}"` }
             ],
             model: "llama-3.1-8b-instant",
             response_format: { type: "json_object" } 
@@ -95,19 +102,17 @@ const setGoal = asyncHandler(async (req, res) => {
             throw new Error("Failed to parse AI response into JSON.");
         }
 
-        if (!aiData.blogPost || !aiData.tweets) {
+        if (!aiData.blogPost || !aiData.tweets || !aiData.hashtags) {
             console.error("Parsed AI Data was missing keys:", aiData);
-            throw new Error("AI response is missing required JSON keys (blogPost or tweets).");
+            throw new Error("AI response is missing required JSON keys (blogPost, tweets, or hashtags).");
         }
-
-        const correctedBlogPost = correctSpelling(aiData.blogPost);
-        const correctedTweets = aiData.tweets.map(tweet => correctSpelling(tweet));
 
         const goal = await Goal.create({
             text: youtubeUrl,
             transcript: "Transcript successfully processed.",
-            blogPost: correctedBlogPost,
-            tweets: correctedTweets,
+            blogPost: aiData.blogPost,
+            tweets: aiData.tweets,
+            hashtags: aiData.hashtags,
             user: req.user.id,
         });
 

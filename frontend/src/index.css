@@ -1,38 +1,36 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
-/* --- تعريف الألوان (المتغيرات) --- */
+/* --- Color Variables --- */
 :root {
-  /* الوضع النهاري (الأبيض) */
   --bg-color: #f4f7f6;
   --card-bg: #ffffff;
   --text-color: #333333;
   --heading-color: #2c3e50;
-  --primary-color: #000000; /* الزر الأسود الفخم */
-  --accent-color: #4a90e2; /* اللينكات والأزرار الفرعية */
+  --primary-color: #000000;
+  --accent-color: #4a90e2;
   --input-bg: #ffffff;
   --border-color: #e6e6e6;
   --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 [data-theme='dark'] {
-  /* الوضع الليلي (الأسود) */
   --bg-color: #121212;
   --card-bg: #1e1e1e;
   --text-color: #e0e0e0;
   --heading-color: #ffffff;
-  --primary-color: #4a90e2; /* الزر في الليلي يكون أزرق ليكون واضحاً */
+  --primary-color: #4a90e2;
   --accent-color: #64b5f6;
   --input-bg: #2d2d2d;
   --border-color: #444444;
   --shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
 }
 
-/* --- الأساسيات --- */
+/* --- Base Styles --- */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  transition: background-color 0.3s ease, color 0.3s ease; /* نعومة في التحويل */
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 body {
@@ -52,7 +50,7 @@ ul {
   list-style: none;
 }
 
-/* --- الحاويات (Layout) --- */
+/* --- Layout --- */
 .container {
   width: 100%;
   max-width: 960px;
@@ -83,7 +81,7 @@ ul {
   margin-right: 5px;
 }
 
-/* --- العناوين --- */
+/* --- Typography --- */
 .heading {
   font-size: 2rem;
   font-weight: 700;
@@ -96,21 +94,21 @@ ul {
   opacity: 0.7;
 }
 
-/* --- النماذج (Forms) --- */
+/* --- Forms --- */
 .form {
   width: 70%;
   margin: 0 auto;
 }
 
 .form-group {
-  margin-bottom: 20px; /* مسافة بين الخانات */
+  margin-bottom: 20px;
 }
 
 .form-group input,
 .form-group textarea,
 .form-group select {
-  width: 100%; /* العرض كامل */
-  padding: 15px; /* خانة مريحة */
+  width: 100%;
+  padding: 15px;
   border: 1px solid var(--border-color);
   border-radius: 10px;
   margin-bottom: 10px;
@@ -127,11 +125,11 @@ ul {
   font-weight: 600;
 }
 
-/* --- الأزرار (Buttons) --- */
+/* --- Buttons --- */
 .btn {
   padding: 12px 30px;
   border: 1px solid transparent;
-  border-radius: 50px; /* حواف دائرية */
+  border-radius: 50px;
   background: var(--primary-color);
   color: #fff;
   font-size: 16px;
@@ -148,7 +146,7 @@ ul {
 }
 
 .btn-block {
-  width: 100%; /* الزر بعرض الصفحة */
+  width: 100%;
   margin-bottom: 20px;
 }
 
@@ -157,7 +155,7 @@ ul {
   transform: translateY(-2px);
 }
 
-/* --- البطاقات (Goals/Cards) --- */
+/* --- Goals/Cards --- */
 .goals {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
@@ -169,14 +167,13 @@ ul {
   color: var(--text-color);
   border: 1px solid var(--border-color);
   margin: 10px 0;
-  padding: 30px; /* مساحة داخلية واسعة */
-  position: relative; /* ضروري عشان زر الحذف */
+  padding: 30px;
+  position: relative;
   border-radius: 15px;
   text-align: left;
   box-shadow: var(--shadow);
 }
 
-/* إصلاح مكان زر الحذف (X) */
 .goal .close {
   position: absolute;
   top: 20px;
@@ -184,12 +181,98 @@ ul {
   cursor: pointer;
   border: none;
   background: none;
-  color: #ff6b6b; /* لون أحمر */
+  color: #ff6b6b;
   font-size: 1.2rem;
 }
 
-/* --- تحسينات الجوال --- */
-@media (max-width: 600px) {
-  .form { width: 100%; }
-  .heading h1 { font-size: 2rem; }
+/* --- NEW STYLES FOR GENERATED CONTENT --- */
+
+.output-section {
+  border-top: 1px solid var(--border-color);
+  padding-top: 20px;
+  margin-top: 20px;
 }
+
+.output-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.output-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--heading-color);
+  margin: 0;
+}
+
+.output-header button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--accent-color);
+}
+
+/* Markdown Content Styling */
+.markdown-content {
+  line-height: 1.7;
+  color: var(--text-color);
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3 {
+  color: var(--heading-color);
+  margin-top: 24px;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.markdown-content p {
+  margin-bottom: 16px;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  padding-left: 24px;
+  margin-bottom: 16px;
+}
+
+.markdown-content li {
+  margin-bottom: 8px;
+}
+
+/* Tweet List Styling */
+.tweet-list {
+  list-style: none;
+  padding: 0;
+}
+
+.tweet-card {
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  line-height: 1.5;
+}
+
+.tweet-card span {
+  flex: 1;
+}
+
+.tweet-card button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--accent-color);
+  margin-left: 15px;
+}
+
+/* Hashtag Styling */
+.hashtag
