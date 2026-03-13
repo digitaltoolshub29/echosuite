@@ -3,7 +3,6 @@ import goalService from './goalService'
 // -- NEW IMPORT --
 // We need to import the action from the auth slice
 import { decrementCredits } from '../auth/authSlice'
-
 const initialState = {
   goals: [],
   isError: false,
