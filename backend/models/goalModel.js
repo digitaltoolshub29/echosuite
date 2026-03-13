@@ -24,6 +24,15 @@ const goalSchema = mongoose.Schema(
       type: [String], // مصفوفة لحفظ التغريدات
       default: [],
     },
+    // -- NEW FIELD ADDED --
+    linkedinPost: {
+      type: String,
+      default: '',
+    },
+    hashtags: {
+      type: [String],
+      default: [],
+    }
   },
   {
     timestamps: true,

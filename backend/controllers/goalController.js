@@ -1,12 +1,14 @@
 const asyncHandler = require('express-async-handler');
 const Goal = require('../models/goalModel');
-const User = require('../models/userModel'); // We need the User model to update credits
+const User = require('../models/userModel');
 const Groq = require('groq-sdk');
 const axios = require('axios');
 
 const groq = new Groq({
     apiKey: process.env.GROQ_API_KEY
 });
+
+// ... (getGoals and extractVideoId functions remain the same)
 
 const getGoals = asyncHandler(async (req, res) => {
     const goals = await Goal.find({ user: req.user.id });
@@ -25,10 +27,8 @@ const setGoal = asyncHandler(async (req, res) => {
         throw new Error('Please add a YouTube link');
     }
 
-    // -- CREDIT CHECK LOGIC --
-    // 1. Check if the user has enough credits before doing anything else.
     if (req.user.credits <= 0) {
-        res.status(403); // 403 Forbidden
+        res.status(403);
         throw new Error('You have no credits left. Please upgrade to Pro.');
     }
 
@@ -66,8 +66,25 @@ const setGoal = asyncHandler(async (req, res) => {
     }
 
     try {
-        const masterPrompt = `You are a world-class content strategist...`; // The rest of your prompt
-        
+        // -- PROMPT UPGRADED --
+        const masterPrompt = `You are a world-class content strategist for a company named Zenith. Your mission is to transform a raw video transcript into a complete, multi-dimensional content package. You MUST ONLY respond with a single, valid, minified JSON object. The JSON object must have the following exact structure: { "blogPost": "...", "tweets": ["...", "..."], "linkedinPost": "...", "hashtags": ["...", "..."] }
+
+        INSTRUCTIONS:
+        1. For "blogPost": (Same as before)
+           - Write an SEO-optimized blog post in Markdown.
+           - Include a compelling H1 title and at least three H2 subheadings.
+           - Use lists and bold text for emphasis.
+        2. For "tweets": (Same as before)
+           - Generate a thread of exactly 3 tweets.
+           - The first tweet must be a strong hook.
+        3. For "linkedinPost": -- NEW --
+           - Write a professional and engaging LinkedIn post.
+           - Start with a strong opening line to grab attention.
+           - Use slightly more formal language than the blog post.
+           - End with an open-ended question to encourage comments and discussion.
+        4. For "hashtags": (Same as before)
+           - Provide an array of exactly 5 relevant hashtags.`;
+
         const chatCompletion = await groq.chat.completions.create({
             messages: [
                 { role: "system", content: masterPrompt },
@@ -90,9 +107,10 @@ const setGoal = asyncHandler(async (req, res) => {
             throw new Error("Failed to parse AI response into JSON.");
         }
 
-        if (!aiData.blogPost || !aiData.tweets || !aiData.hashtags) {
+        // -- VALIDATION UPDATED --
+        if (!aiData.blogPost || !aiData.tweets || !aiData.linkedinPost || !aiData.hashtags) {
             console.error("Parsed AI Data was missing keys:", aiData);
-            throw new Error("AI response is missing required JSON keys (blogPost, tweets, or hashtags).");
+            throw new Error("AI response is missing required JSON keys.");
         }
 
         const goal = await Goal.create({
@@ -100,12 +118,11 @@ const setGoal = asyncHandler(async (req, res) => {
             transcript: "Transcript successfully processed.",
             blogPost: aiData.blogPost,
             tweets: aiData.tweets,
+            linkedinPost: aiData.linkedinPost, // -- NEW FIELD --
             hashtags: aiData.hashtags,
             user: req.user.id,
         });
 
-        // -- DECREMENT CREDIT LOGIC --
-        // 2. If everything is successful, decrement the user's credits.
         await User.findByIdAndUpdate(req.user.id, { $inc: { credits: -1 } });
 
         res.status(200).json(goal);
@@ -117,6 +134,7 @@ const setGoal = asyncHandler(async (req, res) => {
     }
 });
 
+// ... (updateGoal and deleteGoal functions remain the same)
 const updateGoal = asyncHandler(async (req, res) => {
     const goal = await Goal.findById(req.params.id);
     if (!goal) { res.status(400); throw new Error('Goal not found'); }
@@ -132,5 +150,6 @@ const deleteGoal = asyncHandler(async (req, res) => {
     await goal.deleteOne();
     res.status(200).json({ id: req.params.id });
 });
+
 
 module.exports = { getGoals, setGoal, updateGoal, deleteGoal };

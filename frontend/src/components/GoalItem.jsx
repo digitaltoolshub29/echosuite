@@ -1,6 +1,7 @@
 import { useDispatch } from 'react-redux';
 import { deleteGoal } from '../features/goals/goalSlice';
-import { FaTimes, FaTwitter, FaFileAlt, FaCopy, FaHashtag } from 'react-icons/fa';
+// -- NEW IMPORT --
+import { FaTimes, FaTwitter, FaFileAlt, FaCopy, FaHashtag, FaLinkedin } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import ReactMarkdown from 'react-markdown';
 
@@ -33,6 +34,21 @@ function GoalItem({ goal }) {
           </div>
           <div className='markdown-content'>
             <ReactMarkdown>{goal.blogPost}</ReactMarkdown>
+          </div>
+        </div>
+      )}
+
+      {/* -- NEW SECTION ADDED -- */}
+      {goal.linkedinPost && (
+        <div className='output-section'>
+          <div className='output-header'>
+            <h3><FaLinkedin /> LinkedIn Post</h3>
+            <button onClick={() => copyToClipboard(goal.linkedinPost, 'LinkedIn Post')} title="Copy LinkedIn Post">
+              <FaCopy />
+            </button>
+          </div>
+          <div className='linkedin-post-content'>
+            <ReactMarkdown>{goal.linkedinPost}</ReactMarkdown>
           </div>
         </div>
       )}
