@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import GoalForm from '../components/GoalForm'
 import GoalItem from '../components/GoalItem'
-import { getGoals, reset } from '../features/auth/goals/goalSlice'
+import { getGoals, reset } from '../features/goals/goalSlice'
 // ICONS: Using professional icons
 import { FaRegUserCircle, FaRobot, FaCoins } from 'react-icons/fa' // Added FaCoins
 

@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { deleteGoal } from '../features/auth/goals/goalSlice';
+import { deleteGoal } from '../features/goals/goalSlice';
 import { FaTimes, FaTwitter, FaFileAlt, FaCopy, FaHashtag } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import ReactMarkdown from 'react-markdown';

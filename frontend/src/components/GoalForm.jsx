@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { createGoal } from '../features/auth/goals/goalSlice'
+import { createGoal } from '../features/goals/goalSlice'
 import { FaMagic } from 'react-icons/fa'
 
 function GoalForm() {
