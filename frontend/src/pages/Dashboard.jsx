@@ -5,17 +5,15 @@ import GoalForm from '../components/GoalForm'
 import GoalItem from '../components/GoalItem'
 import { getGoals, reset } from '../features/auth/goals/goalSlice'
 // ICONS: Using professional icons
-import { FaRegUserCircle, FaRobot } from 'react-icons/fa'
+import { FaRegUserCircle, FaRobot, FaCoins } from 'react-icons/fa' // Added FaCoins
 
 function Dashboard() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-
   const { user } = useSelector((state) => state.auth)
   const { goals, isLoading, isError, message } = useSelector(
     (state) => state.goals
   )
-
   const [loadingMsg, setLoadingMsg] = useState('Initializing AI...')
   
   useEffect(() => {
@@ -69,6 +67,24 @@ function Dashboard() {
           <FaRegUserCircle /> Welcome, {user && user.name}
         </h1>
         <p>Content Dashboard</p>
+        
+        {/* -- NEW FEATURE: CREDITS DISPLAY -- */}
+        {user && (
+          <div style={{ 
+            marginTop: '20px', 
+            padding: '10px 20px', 
+            backgroundColor: 'var(--card-bg)', 
+            borderRadius: '50px', 
+            display: 'inline-flex', 
+            alignItems: 'center', 
+            gap: '10px',
+            border: '1px solid var(--border-color)',
+            boxShadow: 'var(--shadow)'
+          }}>
+            <FaCoins style={{ color: '#fca311' }} />
+            <span style={{ fontWeight: 'bold' }}>{user.credits}</span> Credits Remaining
+          </div>
+        )}
       </section>
 
       <GoalForm />

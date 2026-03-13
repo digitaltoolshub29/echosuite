@@ -57,6 +57,13 @@ export const authSlice = createSlice({
       state.isError = false
       state.message = ''
     },
+    // -- NEW REDUCER ADDED --
+    // This reducer will be called to decrement the credit count in the frontend state
+    decrementCredits: (state) => {
+      if (state.user) {
+        state.user.credits -= 1;
+      }
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -94,5 +101,6 @@ export const authSlice = createSlice({
   },
 })
 
-export const { reset } = authSlice.actions
+// Export the new action
+export const { reset, decrementCredits } = authSlice.actions
 export default authSlice.reducer

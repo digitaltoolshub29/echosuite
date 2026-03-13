@@ -1,5 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import goalService from './goalService'
+// -- NEW IMPORT --
+// We need to import the action from the auth slice
+import { decrementCredits } from '../auth/authSlice'
 
 const initialState = {
   goals: [],
@@ -15,7 +18,11 @@ export const createGoal = createAsyncThunk(
   async (goalData, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token
-      return await goalService.createGoal(goalData, token)
+      const result = await goalService.createGoal(goalData, token)
+      // -- NEW LOGIC --
+      // If the goal is created successfully, dispatch the decrement action
+      thunkAPI.dispatch(decrementCredits())
+      return result
     } catch (error) {
       const message =
         (error.response &&
@@ -67,7 +74,6 @@ export const deleteGoal = createAsyncThunk(
 )
 
 export const goalSlice = createSlice({
-  // FIX: Changed name to 'goals' (plural) for consistency with the store
   name: 'goals',
   initialState,
   reducers: {

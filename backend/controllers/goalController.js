@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler');
 const Goal = require('../models/goalModel');
+const User = require('../models/userModel'); // We need the User model to update credits
 const Groq = require('groq-sdk');
 const axios = require('axios');
 
@@ -22,6 +23,13 @@ const setGoal = asyncHandler(async (req, res) => {
     if (!req.body.text) {
         res.status(400);
         throw new Error('Please add a YouTube link');
+    }
+
+    // -- CREDIT CHECK LOGIC --
+    // 1. Check if the user has enough credits before doing anything else.
+    if (req.user.credits <= 0) {
+        res.status(403); // 403 Forbidden
+        throw new Error('You have no credits left. Please upgrade to Pro.');
     }
 
     const youtubeUrl = req.body.text;
@@ -58,27 +66,8 @@ const setGoal = asyncHandler(async (req, res) => {
     }
 
     try {
-        const masterPrompt = `You are a world-class content strategist for a company named Zenith. Your mission is to transform a raw video transcript into high-value, engaging marketing assets. You MUST ONLY respond with a single, valid, minified JSON object. Do not include any text, explanation, or markdown before or after the JSON object. The JSON object must have the following exact structure: { "blogPost": "...", "tweets": ["...", "..."], "hashtags": ["...", "...", "..."] }
-
-        INSTRUCTIONS:
-        1. For "blogPost":
-           - Write an SEO-optimized blog post based on the transcript.
-           - The blog post MUST be formatted in Markdown.
-           - It MUST include a compelling H1 title (e.g., "# Title").
-           - It MUST be structured with at least three H2 subheadings (e.g., "## Subheading").
-           - Use bullet points or numbered lists where appropriate.
-           - Use bold text ('**text**') to emphasize key terms.
-           - The tone should be expert, yet accessible.
-
-        2. For "tweets":
-           - Generate a thread of exactly 3 tweets.
-           - The first tweet must be a strong, curiosity-driven hook.
-           - The tweets should flow logically and provide value.
-           - Use emojis intelligently to increase engagement.
-
-        3. For "hashtags":
-           - Provide an array of exactly 5 relevant and strategic hashtags for Twitter and LinkedIn.`;
-
+        const masterPrompt = `You are a world-class content strategist...`; // The rest of your prompt
+        
         const chatCompletion = await groq.chat.completions.create({
             messages: [
                 { role: "system", content: masterPrompt },
@@ -90,7 +79,6 @@ const setGoal = asyncHandler(async (req, res) => {
 
         let aiData;
         const aiResponseContent = chatCompletion.choices[0]?.message?.content;
-
         if (!aiResponseContent) {
             throw new Error("AI returned an empty response.");
         }
@@ -115,6 +103,10 @@ const setGoal = asyncHandler(async (req, res) => {
             hashtags: aiData.hashtags,
             user: req.user.id,
         });
+
+        // -- DECREMENT CREDIT LOGIC --
+        // 2. If everything is successful, decrement the user's credits.
+        await User.findByIdAndUpdate(req.user.id, { $inc: { credits: -1 } });
 
         res.status(200).json(goal);
 
